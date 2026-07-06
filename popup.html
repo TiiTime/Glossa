@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Glossa</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 14px 16px 16px;
+        width: 280px;
+        font: 13px/1.4 "Segoe UI", system-ui, sans-serif;
+        color: #cdd6f4;
+        background: #1e1e2e;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #89b4fa;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #a6adc8;
+        font-size: 12px;
+      }
+      select, input[type="number"] {
+        width: 100%;
+        margin-top: 4px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        border: 1px solid #45475a;
+        background: #313244;
+        color: #cdd6f4;
+        font-size: 13px;
+      }
+      .row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+      .row input { width: auto; margin: 0; }
+      .row span { color: #cdd6f4; font-size: 13px; }
+      button {
+        width: 100%;
+        margin-top: 4px;
+        padding: 8px;
+        border: none;
+        border-radius: 8px;
+        background: #89b4fa;
+        color: #1e1e2e;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button:hover { background: #b4befe; }
+      .hint {
+        margin-top: 12px;
+        font-size: 11px;
+        color: #6c7086;
+        line-height: 1.5;
+      }
+      .saved { color: #a6e3a1; font-size: 12px; min-height: 18px; margin-top: 6px; }
+    </style>
+  </head>
+  <body>
+    <h1>Glossa</h1>
+    <div class="row">
+      <input type="checkbox" id="enabled" checked />
+      <span>Aktiv</span>
+    </div>
+    <label>
+      Übersetzen nach
+      <select id="targetLang">
+        <option value="de">Deutsch</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+        <option value="it">Italiano</option>
+        <option value="pt">Português</option>
+        <option value="nl">Nederlands</option>
+        <option value="pl">Polski</option>
+        <option value="ja">日本語</option>
+        <option value="zh-CN">中文</option>
+      </select>
+    </label>
+    <label>
+      Hover-Verzögerung (ms)
+      <input type="number" id="hoverDelayMs" min="0" max="3000" step="100" value="1000" />
+    </label>
+    <button type="button" id="save">Speichern</button>
+    <div class="saved" id="status"></div>
+    <p class="hint">
+      1 Sek. auf Wort oder Markierung → Übersetzung.<br />
+      Maus weg → Popup sofort weg.<br />
+      Markieren → sofort · Hover auf Markierung → ganzer Satz.
+    </p>
+    <script src="popup.js"></script>
+  </body>
+</html>
