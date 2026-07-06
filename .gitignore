@@ -1,6 +1,6 @@
 .DS_Store
 Thumbs.db
-*.zip
+dist/
 *.crx
 *.pem
 .env

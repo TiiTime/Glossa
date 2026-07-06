@@ -24,6 +24,17 @@ Entwickelt von **Tii**. **Kostenlos** und Open Source (siehe [LICENSE](LICENSE))
 
 ## Installation (Brave / Chrome)
 
+### Einfach: Installer (Windows)
+
+1. [Releases](https://github.com/TiiTime/Glossa/releases/latest) öffnen
+2. `Install-Glossa.bat` herunterladen (oder Repo klonen → `install/Install-Glossa.bat` doppelklicken)
+3. Installer lädt Glossa automatisch und öffnet die Extension-Seite im Browser
+4. **Einmalig:** Entwicklermodus an → *Entpackte Erweiterung laden* → Ordner aus der Meldung wählen (liegt unter `%LOCALAPPDATA%\Glossa\extension`)
+
+**Hinweis:** Ein echter Ein-Klick-Install wie im Chrome Web Store ist ohne Store **nicht möglich** — Brave/Chrome blockieren das aus Sicherheitsgründen. Der Installer erledigt Download, Entpacken und den richtigen Ordner.
+
+### Manuell
+
 1. Ordner mit Glossa herunterladen oder klonen
 2. `brave://extensions` bzw. `chrome://extensions` öffnen
 3. **Entwicklermodus** aktivieren
@@ -105,6 +116,17 @@ Built by **Tii**. **Free** and open source (see [LICENSE](LICENSE)).
 **Settings:** Click the extension icon → target language, hover delay, on/off.
 
 ### Installation (Brave / Chrome)
+
+#### Easy: installer (Windows)
+
+1. Open [Releases](https://github.com/TiiTime/Glossa/releases/latest)
+2. Download and run `Install-Glossa.bat` (or clone repo → double-click `install/Install-Glossa.bat`)
+3. The installer downloads Glossa and opens the extensions page
+4. **One-time:** Enable Developer mode → *Load unpacked* → pick the folder from the dialog (`%LOCALAPPDATA%\Glossa\extension`)
+
+**Note:** True one-click install like the Chrome Web Store is **not possible** without the store — browsers block it for security. The installer handles download, extract, and the correct folder path.
+
+#### Manual
 
 1. Download or clone this repository
 2. Open `brave://extensions` or `chrome://extensions`
