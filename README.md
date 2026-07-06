@@ -181,6 +181,10 @@ MIT — free to use, copy, and modify. Please credit **Tii** when you redistribu
 
 Details: [LICENSE](LICENSE)
 
+### Chrome Web Store (preparation)
+
+Listing copy, screenshots, logo, privacy: [`webstore/`](webstore/) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)
+
 ### Regenerate icons (optional, developers)
 
 ```powershell
