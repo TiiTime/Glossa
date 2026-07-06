@@ -234,7 +234,9 @@ async function requestTranslate(text, rect, cx, cy) {
           ? 'Keine Übersetzung'
           : result.error === 'disabled'
             ? 'Glossa ist aus'
-            : 'Fehlgeschlagen';
+            : result.error === 'too_long'
+              ? 'Text zu lang'
+              : 'Fehlgeschlagen';
       showError(text, msg, rect, cx, cy);
     }
   } catch (e) {

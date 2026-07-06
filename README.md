@@ -89,6 +89,13 @@ Details: [LICENSE](LICENSE)
 
 ---
 
+## Chrome Web Store (Vorbereitung)
+
+Listing-Texte, Screenshots, Logo und Datenschutz: Ordner [`webstore/`](webstore/)  
+Anleitung: [`webstore/STORE_LISTING.md`](webstore/STORE_LISTING.md)
+
+---
+
 ## Icons neu erzeugen (optional, nur für Entwickler)
 
 ```powershell

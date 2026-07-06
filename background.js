@@ -25,6 +25,9 @@ function getCached(text, sl, tl) {
     cache.delete(key);
     return null;
   }
+  // Bump recency so frequently reused entries survive eviction (true LRU, not just FIFO).
+  cache.delete(key);
+  cache.set(key, hit);
   return hit.data;
 }
 

@@ -57,14 +57,15 @@
         line-height: 1.5;
       }
       .saved { color: #a6e3a1; font-size: 12px; min-height: 18px; margin-top: 6px; }
+      .saved.error { color: #f38ba8; }
     </style>
   </head>
   <body>
     <h1>Glossa</h1>
-    <div class="row">
+    <label class="row" for="enabled">
       <input type="checkbox" id="enabled" checked />
       <span>Aktiv</span>
-    </div>
+    </label>
     <label>
       Übersetzen nach
       <select id="targetLang">

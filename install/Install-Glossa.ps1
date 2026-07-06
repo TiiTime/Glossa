@@ -1,6 +1,7 @@
 # Glossa installer — downloads extension, extracts locally, opens Brave/Chrome extensions page.
 # Brave/Chrome block fully silent installs for non-store extensions (security).
 $ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.Windows.Forms
 
 $Repo = 'TiiTime/Glossa'
 $InstallDir = Join-Path $env:LOCALAPPDATA 'Glossa\extension'
@@ -16,6 +17,7 @@ function Get-DownloadUrl {
         if ($asset.browser_download_url) { return $asset.browser_download_url }
     } catch { }
 
+    Write-Host 'Kein Release gefunden — verwende aktuellen master-Branch als Fallback.' -ForegroundColor Yellow
     return "https://github.com/$Repo/archive/refs/heads/master.zip"
 }
 
