@@ -4,13 +4,15 @@
 
 Entwickelt von **Tii**. **Kostenlos** und Open Source (siehe [LICENSE](LICENSE)).
 
+**English:** [below ↓](#english)
+
 ---
 
 ## So funktioniert es
 
 | Aktion | Ergebnis |
 |--------|----------|
-| **Maus 1 Sekunde auf ein Wort** | Übersetzung erscheint (Standard: Deutsch oben, Original unten) |
+| **Maus 1 Sekunde auf ein Wort** | Übersetzung erscheint (Standard: Zielsprache oben, Original unten) |
 | **Maus weg vom Wort** | Popup schließt sofort |
 | **Text markieren** | Sofortige Übersetzung der Auswahl |
 | **Maus auf markierten Text** (egal wo) | Nach 1 Sekunde wird der **ganze** markierte Text übersetzt |
@@ -77,6 +79,80 @@ Details: [LICENSE](LICENSE)
 ---
 
 ## Icons neu erzeugen (optional, nur für Entwickler)
+
+```powershell
+powershell -File scripts/create-icons.ps1
+```
+
+---
+
+## English
+
+**Hover translator for Brave and Chrome** — hover a word or select text, get a translation in a small popup.
+
+Built by **Tii**. **Free** and open source (see [LICENSE](LICENSE)).
+
+### How it works
+
+| Action | Result |
+|--------|--------|
+| **Hover on a word for 1 second** | Translation appears (target language on top, original below) |
+| **Move mouse away** | Popup closes immediately |
+| **Select text** | Instant translation of the selection |
+| **Hover anywhere on selected text** | After 1 second, the **full** selection is translated |
+| **ESC** | Close popup |
+
+**Settings:** Click the extension icon → target language, hover delay, on/off.
+
+### Installation (Brave / Chrome)
+
+1. Download or clone this repository
+2. Open `brave://extensions` or `chrome://extensions`
+3. Enable **Developer mode**
+4. Click **Load unpacked**
+5. Select the Glossa folder
+
+**After every Glossa update:** Click *Reload* on the extension and **refresh the open page (F5)**.
+
+**Tip:** Disable other hover translators (e.g. TransOver) to avoid conflicts.
+
+### Important notes
+
+**Privacy**
+
+- Glossa sends text to be translated to **Google Translate** (public endpoints, like many free translator extensions).
+- There is **no Tii account** and **no Tii server**.
+- Recent translations are cached **locally in your browser** only.
+- Settings are stored in your browser’s `chrome.storage.sync`.
+
+**Limitations**
+
+- Text inside **images** or **canvas** cannot be translated.
+- **Input fields** are intentionally ignored.
+- Some **cross-origin iframes** are blocked by the browser — no extension can fix that.
+- Very short words (under 2 characters, except e.g. CJK) are skipped.
+- Google may rate-limit heavy use.
+
+**Cost**
+
+- **Glossa is free.**
+- **No fees** when you install it yourself (developer mode).
+- Publishing on the **Chrome Web Store** costs a one-time ~USD 5 Google developer fee — optional, unrelated to the license.
+
+### Tech (brief)
+
+- Manifest V3, lean vanilla JavaScript (no jQuery)
+- Shadow DOM popup (immune to page CSS)
+- Dual API fallback + local cache
+- More reliable than older hover translators on most sites
+
+### License
+
+MIT — free to use, copy, and modify. Please credit **Tii** when you redistribute.
+
+Details: [LICENSE](LICENSE)
+
+### Regenerate icons (optional, developers)
 
 ```powershell
 powershell -File scripts/create-icons.ps1
