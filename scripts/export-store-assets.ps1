@@ -12,7 +12,7 @@ if (-not (Test-Path $logo)) {
 
 function Save-Resize($srcPath, $destPath, $w, $h) {
     $img = [System.Drawing.Image]::FromFile($srcPath)
-    $bmp = New-Object System.Drawing.Bitmap $w, $h
+    $bmp = New-Object System.Drawing.Bitmap $w, $h, ([System.Drawing.Imaging.PixelFormat]::Format24bppRgb)
     $g = [System.Drawing.Graphics]::FromImage($bmp)
     $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
     $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality

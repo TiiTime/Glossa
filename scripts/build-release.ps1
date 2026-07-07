@@ -15,6 +15,7 @@ $files = @(
     'content.js',
     'popup.html',
     'popup.js',
+    'languages.js',
     'LICENSE'
 )
 foreach ($f in $files) {

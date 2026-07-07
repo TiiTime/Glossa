@@ -15,6 +15,7 @@ let pendingRequest = 0;
 let loading = false;
 let lastX = 0;
 let lastY = 0;
+let pointerInside = false;
 
 function runtimeSend(msg) {
   return new Promise((resolve, reject) => {
@@ -87,10 +88,35 @@ function expandRangeToWord(range) {
   return { range: out, word };
 }
 
+/** Cursor must sit on a word glyph, not whitespace snapped to a nearby word. */
+function pointOverRange(x, y, range) {
+  for (const rect of range.getClientRects()) {
+    if (x >= rect.left && x < rect.right && y >= rect.top && y < rect.bottom) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function wordAtPoint(x, y, root) {
+  const range = caretRangeAtPoint(x, y, root);
+  if (!range) return null;
+  const node = range.startContainer;
+  if (node.nodeType !== 3) return null;
+  const text = node.nodeValue || '';
+  let off = range.startOffset;
+  if (off >= text.length) off = text.length - 1;
+  if (off < 0) return null;
+  const ch = text[off];
+  if (!ch || !WORD_CHARS.test(ch)) return null;
+  const hit = expandRangeToWord(range);
+  if (!hit || !pointOverRange(x, y, hit.range)) return null;
+  return hit;
+}
+
 /** Fast path — caret only, no TreeWalker (hot path for leave detection). */
 function fastWordAt(x, y) {
-  const range = caretRangeAtPoint(x, y, document);
-  return range ? expandRangeToWord(range) : null;
+  return wordAtPoint(x, y, document);
 }
 
 function findTextRangeAtPoint(x, y) {
@@ -101,8 +127,7 @@ function findTextRangeAtPoint(x, y) {
   let node = el;
   while (node) {
     if (node.shadowRoot) {
-      const sr = caretRangeAtPoint(x, y, node.shadowRoot);
-      const w = sr && expandRangeToWord(sr);
+      const w = wordAtPoint(x, y, node.shadowRoot);
       if (w) return w;
     }
     node = node.parentNode || node.host;
@@ -256,7 +281,7 @@ function scheduleSelectionHover(x, y, selHit) {
   const text = selHit.text;
   hoverTimer = setTimeout(() => {
     hoverTimer = 0;
-    if (!settings.enabled) return;
+    if (!settings.enabled || !pointerInside) return;
     const again = getSelectionHover(lastX, lastY);
     if (!again || again.text !== text) return;
     requestTranslate(text, again.rect, lastX, lastY);
@@ -268,7 +293,7 @@ function scheduleHover(x, y) {
   const delay = settings.hoverDelayMs ?? HOVER_MS;
   hoverTimer = setTimeout(() => {
     hoverTimer = 0;
-    if (!settings.enabled) return;
+    if (!settings.enabled || !pointerInside) return;
     const hit = findTextRangeAtPoint(lastX, lastY);
     if (!hit || hit.word !== stickyWord) return;
     const rect = hit.range.getBoundingClientRect();
@@ -278,6 +303,7 @@ function scheduleHover(x, y) {
 
 function onMouseMove(e) {
   if (!settings.enabled) return;
+  pointerInside = true;
   const now = Date.now();
   if (now - lastMoveAt < MOVE_THROTTLE_MS) return;
   lastMoveAt = now;
@@ -338,7 +364,13 @@ function onSelectionFinish() {
   requestTranslate(sel.text, sel.rect, cx, sel.rect.bottom);
 }
 
+function onPointerLeave() {
+  pointerInside = false;
+  hidePopupNow();
+}
+
 document.addEventListener('mousemove', onMouseMove, { capture: true, passive: true });
+document.documentElement.addEventListener('mouseleave', onPointerLeave, { passive: true });
 document.addEventListener('mousedown', onMouseDown, true);
 document.addEventListener('mouseup', () => setTimeout(onSelectionFinish, 8), true);
 document.addEventListener('scroll', hidePopupNow, { capture: true, passive: true });

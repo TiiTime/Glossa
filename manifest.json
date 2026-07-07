@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Glossa",
-  "version": "1.0.5",
+  "version": "1.0.9",
   "description": "Hover word or select text to translate — reliable on any page.",
   "homepage_url": "https://github.com/TiiTime/Glossa",
   "permissions": ["storage", "activeTab"],

@@ -16,13 +16,17 @@ Assets live in `webstore/assets/`.
 
 ## Screenshots (required, 1–5)
 
-Upload as **1280×800** (preferred) or 640×400, square corners, no padding.
+Upload as **1280×800** (preferred) or 640×400, square corners, no padding.  
+**PNG must be 24-bit RGB — no alpha channel.** If Google rejects size: `powershell -File scripts/fix-store-screenshots.ps1`
 
 | # | File | Caption (optional overlay) |
 |---|------|---------------------------|
 | 1 | `screenshot-01-hover.png` | Hover any word — translate instantly |
 | 2 | `screenshot-02-selection.png` | Select text — full sentence translation |
 | 3 | `screenshot-03-settings.png` | Simple settings — language & delay |
+| 4 | `promo-screenshot-1280x800.png` | Promo tile — logo & tagline (1280×800) |
+
+Regenerate all: `powershell -File scripts/render-all-store-screenshots.ps1`
 
 ---
 
@@ -62,7 +66,7 @@ Hover over any word for one second and a small popup shows the translation (targ
 - Shadow DOM popup — site styles cannot break it
 - Lean extension (no jQuery), low resource use
 - Dual translation API fallback + local cache
-- German, English, French, Spanish, and more target languages
+- Target languages: **80+** widely spoken languages — selectable in the popup (German, English, Arabic, Hindi, Chinese, …)
 
 **How to use**
 
@@ -92,7 +96,7 @@ Einfach ein Wort eine Sekunde anhoveren: Ein kleines Popup zeigt die Übersetzun
 - Popup im Shadow DOM — Seiten-CSS kann es nicht zerstören
 - Schlank (kein jQuery), wenig Ressourcen
 - Zwei API-Fallbacks + lokaler Cache
-- Zielsprachen u. a. Deutsch, Englisch, Französisch, Spanisch
+- Zielsprachen: **80+** meist gesprochene Sprachen — im Popup wählbar (Deutsch, Englisch, Arabisch, Hindi, Chinesisch, …)
 
 **Bedienung**
 
@@ -133,6 +137,8 @@ Primary: **German** and **English** (add both localizations in dashboard if poss
 
 **Privacy policy URL:**  
 `https://github.com/TiiTime/Glossa/blob/master/webstore/PRIVACY.md`
+
+> **Hinweis:** Default-Branch ist **`master`**, nicht `main`. `/blob/main/...` liefert 404.
 
 ---
 

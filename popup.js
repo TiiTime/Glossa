@@ -7,21 +7,39 @@ const DEFAULTS = {
 
 const $ = (id) => document.getElementById(id);
 
+const LANG_CODES = new Set(GLOSSA_LANGUAGES.map((l) => l.code));
+
+function populateLanguages() {
+  const sel = $('targetLang');
+  sel.replaceChildren();
+  for (const { code, name } of GLOSSA_LANGUAGES) {
+    const opt = document.createElement('option');
+    opt.value = code;
+    opt.textContent = name;
+    sel.appendChild(opt);
+  }
+}
+
+function normalizeLang(code) {
+  return LANG_CODES.has(code) ? code : DEFAULTS.targetLang;
+}
+
 async function load() {
+  populateLanguages();
   try {
     const stored = await chrome.storage.sync.get(DEFAULTS);
     $('enabled').checked = stored.enabled !== false;
-    $('targetLang').value = stored.targetLang || 'de';
+    $('targetLang').value = normalizeLang(stored.targetLang || DEFAULTS.targetLang);
     $('hoverDelayMs').value = stored.hoverDelayMs ?? 1000;
   } catch {
-    /* keep the defaults already set in the HTML */
+    $('targetLang').value = DEFAULTS.targetLang;
   }
 }
 
 $('save').addEventListener('click', async () => {
   const data = {
     enabled: $('enabled').checked,
-    targetLang: $('targetLang').value,
+    targetLang: normalizeLang($('targetLang').value),
     sourceLang: 'auto',
     hoverDelayMs: Math.max(0, Math.min(3000, parseInt($('hoverDelayMs').value, 10) || 1000)),
   };

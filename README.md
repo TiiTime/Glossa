@@ -92,7 +92,7 @@ Details: [LICENSE](LICENSE)
 ## Chrome Web Store (Vorbereitung)
 
 Listing-Texte, Screenshots, Logo und Datenschutz: Ordner [`webstore/`](webstore/)  
-Anleitung: [`webstore/STORE_LISTING.md`](webstore/STORE_LISTING.md)
+Upload-Schritte: [`webstore/UPLOAD_CHECKLIST.md`](webstore/UPLOAD_CHECKLIST.md) · Texte: [`STORE_LISTING.md`](webstore/STORE_LISTING.md)
 
 ---
 
@@ -183,7 +183,7 @@ Details: [LICENSE](LICENSE)
 
 ### Chrome Web Store (preparation)
 
-Listing copy, screenshots, logo, privacy: [`webstore/`](webstore/) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)
+Listing copy, screenshots, logo, privacy: [`webstore/`](webstore/) · Upload: [`UPLOAD_CHECKLIST.md`](webstore/UPLOAD_CHECKLIST.md) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)
 
 ### Regenerate icons (optional, developers)
 
