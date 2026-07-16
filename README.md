@@ -4,6 +4,8 @@
 
 Entwickelt von **Tii**. **Kostenlos** und Open Source (siehe [LICENSE](LICENSE)).
 
+**Installation:** [**Chrome Web Store**](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (empfohlen für Chrome) · [Windows-Installer](#einfach-installer-windows) · [manuell](#manuell)
+
 **English:** [below ↓](#english)
 
 ---
@@ -24,6 +26,14 @@ Entwickelt von **Tii**. **Kostenlos** und Open Source (siehe [LICENSE](LICENSE))
 
 ## Installation (Brave / Chrome)
 
+### Chrome Web Store (empfohlen)
+
+1. [Glossa im Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) öffnen
+2. **Zu Chrome hinzufügen** klicken
+3. Fertig — Updates kommen automatisch über den Store
+
+Gilt für **Google Chrome**. In **Brave** funktioniert der Store-Link oft ebenfalls; sonst Installer oder manuelle Installation unten.
+
 ### Einfach: Installer (Windows)
 
 1. [Releases](https://github.com/TiiTime/Glossa/releases/latest) öffnen
@@ -31,7 +41,7 @@ Entwickelt von **Tii**. **Kostenlos** und Open Source (siehe [LICENSE](LICENSE))
 3. Installer lädt Glossa automatisch und öffnet die Extension-Seite im Browser
 4. **Einmalig:** Entwicklermodus an → *Entpackte Erweiterung laden* → Ordner aus der Meldung wählen (liegt unter `%LOCALAPPDATA%\Glossa\extension`)
 
-**Hinweis:** Ein echter Ein-Klick-Install wie im Chrome Web Store ist ohne Store **nicht möglich** — Brave/Chrome blockieren das aus Sicherheitsgründen. Der Installer erledigt Download, Entpacken und den richtigen Ordner.
+**Hinweis:** Ohne Chrome Web Store braucht Brave/Chrome den **Entwicklermodus** — der Installer erledigt Download, Entpacken und den richtigen Ordner.
 
 ### Manuell
 
@@ -66,9 +76,8 @@ Entwickelt von **Tii**. **Kostenlos** und Open Source (siehe [LICENSE](LICENSE))
 
 ### Kosten
 
-- **Glossa selbst ist kostenlos.**
-- Es fallen **keine Gebühren** an, solange du es selbst installierst (Entwicklermodus).
-- Nur wer später im **Chrome Web Store** veröffentlichen will, zahlt dort einmalig ca. 5 USD an Google — das ist optional und hat nichts mit der Lizenz zu tun.
+- **Glossa ist kostenlos** — im [Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) und als Open Source.
+- Keine Nutzungsgebühren, kein Tii-Konto.
 
 ---
 
@@ -89,10 +98,12 @@ Details: [LICENSE](LICENSE)
 
 ---
 
-## Chrome Web Store (Vorbereitung)
+## Chrome Web Store
 
-Listing-Texte, Screenshots, Logo und Datenschutz: Ordner [`webstore/`](webstore/)  
-Upload-Schritte: [`webstore/UPLOAD_CHECKLIST.md`](webstore/UPLOAD_CHECKLIST.md) · Texte: [`STORE_LISTING.md`](webstore/STORE_LISTING.md)
+**Live:** [Glossa im Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.9 · Update **1.0.10** bereit)
+
+Listing-Texte, Screenshots und Datenschutz für Updates: Ordner [`webstore/`](webstore/) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)  
+**Patches / Versionshinweise:** [`CHANGELOG.md`](CHANGELOG.md) (oben in die Store-**Beschreibung** kopieren — kein separates Update-Feld)
 
 ---
 
@@ -110,6 +121,8 @@ powershell -File scripts/create-icons.ps1
 
 Built by **Tii**. **Free** and open source (see [LICENSE](LICENSE)).
 
+**Install:** [**Chrome Web Store**](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (recommended for Chrome) · [Windows installer](#easy-installer-windows) · [manual](#manual)
+
 ### How it works
 
 | Action | Result |
@@ -124,6 +137,14 @@ Built by **Tii**. **Free** and open source (see [LICENSE](LICENSE)).
 
 ### Installation (Brave / Chrome)
 
+#### Chrome Web Store (recommended)
+
+1. Open [Glossa on the Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm)
+2. Click **Add to Chrome**
+3. Done — updates arrive automatically via the store
+
+Works in **Google Chrome**. In **Brave**, the store link often works too; otherwise use the installer or manual steps below.
+
 #### Easy: installer (Windows)
 
 1. Open [Releases](https://github.com/TiiTime/Glossa/releases/latest)
@@ -131,7 +152,7 @@ Built by **Tii**. **Free** and open source (see [LICENSE](LICENSE)).
 3. The installer downloads Glossa and opens the extensions page
 4. **One-time:** Enable Developer mode → *Load unpacked* → pick the folder from the dialog (`%LOCALAPPDATA%\Glossa\extension`)
 
-**Note:** True one-click install like the Chrome Web Store is **not possible** without the store — browsers block it for security. The installer handles download, extract, and the correct folder path.
+**Note:** Without the Chrome Web Store, Brave/Chrome require **Developer mode** — the installer handles download, extract, and the correct folder path.
 
 #### Manual
 
@@ -164,9 +185,8 @@ Built by **Tii**. **Free** and open source (see [LICENSE](LICENSE)).
 
 **Cost**
 
-- **Glossa is free.**
-- **No fees** when you install it yourself (developer mode).
-- Publishing on the **Chrome Web Store** costs a one-time ~USD 5 Google developer fee — optional, unrelated to the license.
+- **Glossa is free** — on the [Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) and as open source.
+- No usage fees, no Tii account required.
 
 ### Tech (brief)
 
@@ -181,9 +201,12 @@ MIT — free to use, copy, and modify. Please credit **Tii** when you redistribu
 
 Details: [LICENSE](LICENSE)
 
-### Chrome Web Store (preparation)
+### Chrome Web Store
 
-Listing copy, screenshots, logo, privacy: [`webstore/`](webstore/) · Upload: [`UPLOAD_CHECKLIST.md`](webstore/UPLOAD_CHECKLIST.md) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)
+**Live:** [Glossa on the Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.9 · update **1.0.10** ready)
+
+Listing copy, screenshots, and privacy for updates: [`webstore/`](webstore/) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)  
+**Patches / release notes:** [`CHANGELOG.md`](CHANGELOG.md) (paste at top of Store **Description** — no separate What's-new field)
 
 ### Regenerate icons (optional, developers)
 

@@ -36,12 +36,15 @@ async function load() {
   }
 }
 
+let statusTimer = 0;
+
 $('save').addEventListener('click', async () => {
+  const raw = parseInt($('hoverDelayMs').value, 10);
   const data = {
     enabled: $('enabled').checked,
     targetLang: normalizeLang($('targetLang').value),
     sourceLang: 'auto',
-    hoverDelayMs: Math.max(0, Math.min(3000, parseInt($('hoverDelayMs').value, 10) || 1000)),
+    hoverDelayMs: Math.max(0, Math.min(3000, Number.isFinite(raw) ? raw : 1000)),
   };
   const status = $('status');
   try {
@@ -52,7 +55,8 @@ $('save').addEventListener('click', async () => {
     status.textContent = 'Fehler beim Speichern';
     status.classList.add('error');
   }
-  setTimeout(() => {
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => {
     status.textContent = '';
   }, 1500);
 });

@@ -1,6 +1,6 @@
 # Glossa — Privacy Policy
 
-**Last updated:** 2026-07-07  
+**Last updated:** 2026-07-16  
 **Developer:** Tii  
 **Extension:** Glossa (browser extension for Chrome / Brave)
 

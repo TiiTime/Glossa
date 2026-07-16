@@ -1,5 +1,8 @@
 # Glossa — Chrome Web Store Upload
 
+> **Status:** v1.0.9 live · **v1.0.10 bereit zum Upload**  
+> Store: [Glossa](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm)
+
 Schritt-für-Schritt für das [Developer Dashboard](https://chrome.google.com/webstore/devconsole).  
 Texte zum Kopieren: **`STORE_LISTING.md`** · Datenschutz: **`PRIVACY.md`**
 
@@ -8,19 +11,17 @@ Texte zum Kopieren: **`STORE_LISTING.md`** · Datenschutz: **`PRIVACY.md`**
 ## Vor dem Upload (lokal)
 
 ```powershell
-# Extension-ZIP bauen
-powershell -File scripts/build-release.ps1
-
-# Optional: Settings-Screenshot neu rendern
-powershell -File scripts/render-settings-screenshot.ps1
+# Extension-ZIP bauen (v1.0.10)
+powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1
 ```
 
 | Prüfpunkt | Datei / Wert |
 |-----------|----------------|
 | ZIP | `dist/glossa-extension.zip` |
-| Version | `manifest.json` → aktuell **1.0.8** |
+| Version | `manifest.json` → **1.0.10** |
+| Permissions | nur `storage` (+ host: Google Translate) |
 | Store-Icon | `webstore/assets/icon-128.png` (128×128) |
-| Screenshots | `screenshot-01-hover.png`, `-02-selection.png`, `-03-settings.png` (je 1280×800) |
+| Screenshots | `screenshot-01-hover.png`, `-02-selection.png`, `-03-settings.png` (je 1280×800, 24-bit RGB) |
 | Promo (1280×800) | `promo-screenshot-1280x800.png` |
 | Promo-Tile | `webstore/assets/promo-tile-440x280.png` (440×280) |
 | Privacy-URL | `https://github.com/TiiTime/Glossa/blob/master/webstore/PRIVACY.md` |
@@ -31,15 +32,19 @@ powershell -File scripts/render-settings-screenshot.ps1
 
 ---
 
-## Dashboard — neues Item
+## Dashboard — Update (bestehendes Item)
 
-1. [Developer Dashboard](https://chrome.google.com/webstore/devconsole) → **Neues Element** (einmalig ~5 USD Google-Entwicklergebühr).
-2. **ZIP hochladen:** `dist/glossa-extension.zip`
-3. Warten bis automatische Prüfung durch ist (Manifest, Berechtigungen).
+1. [Developer Dashboard](https://chrome.google.com/webstore/devconsole) → **Glossa** öffnen.
+2. Tab **Paket** → **Neues Paket hochladen** → `dist/glossa-extension.zip`.
+3. Automatische Prüfung abwarten (Manifest, Berechtigungen).
+4. Optional: Update-Hinweise oben in **Beschreibung** einfügen (siehe **`CHANGELOG.md`** — kein separates „Neu in dieser Version“-Feld).
+5. **Zur Überprüfung einreichen** / **Prüfen lassen**.
+
+Screenshots/Icon/Privacy müssen nur geändert werden, wenn sich etwas geändert hat — für 1.0.10 reichen die bestehenden Assets.
 
 ---
 
-## Store-Listing (Tab „Store-Eintrag“)
+## Store-Listing (falls Felder leer / Update)
 
 | Feld | Inhalt |
 |------|--------|
@@ -82,7 +87,7 @@ Antworten wie in `STORE_LISTING.md` → Privacy practices:
 
 1. Review abwarten (typisch 1–3 Werktage, kann variieren).
 2. Bei Ablehnung: Meldung im Dashboard lesen, ZIP/Listing/Berechtigungen anpassen, neu einreichen.
-3. Nach Freigabe: GitHub-Release mit gleicher Version + `Install-Glossa.bat` optional aktualisieren; README kann auf Store-Link verweisen.
+3. Nach Freigabe: GitHub-Release `v1.0.10` mit `glossa-extension.zip`; README-Version auf 1.0.10 setzen.
 
 ---
 
@@ -90,7 +95,7 @@ Antworten wie in `STORE_LISTING.md` → Privacy practices:
 
 | Was | Befehl |
 |-----|--------|
-| Icons + Promo aus Logo | `powershell -File scripts/export-store-assets.ps1` (Logo: `glossa-logo-source.png`) |
-| Hover/Selection Screenshots | Quellen `glossa-screenshot-*-source.png` ersetzen → `export-store-assets.ps1` |
-| Alle Store-Screenshots (1280×800, kein Alpha) | `powershell -File scripts/fix-store-screenshots.ps1` |
+| Icons + Promo aus Logo | `powershell -ExecutionPolicy Bypass -File scripts/export-store-assets.ps1` |
+| Hover/Selection Screenshots | Quellen ersetzen → `export-store-assets.ps1` |
+| Alle Store-Screenshots (1280×800, kein Alpha) | `powershell -ExecutionPolicy Bypass -File scripts/fix-store-screenshots.ps1` |
 | Settings-Screenshot | `settings-screenshot.html` bearbeiten → `render-settings-screenshot.ps1` |

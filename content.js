@@ -44,6 +44,7 @@ async function loadSettings() {
   } catch {
     /* defaults */
   }
+  if (!settings.enabled) hidePopupNow();
 }
 
 loadSettings();
@@ -57,8 +58,31 @@ function isEditable(el) {
   return t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || el.isContentEditable;
 }
 
+function selectionInEditable() {
+  const sel = window.getSelection();
+  const anchor = sel?.anchorNode;
+  if (!anchor) return false;
+  const el = anchor.nodeType === 3 ? anchor.parentElement : anchor;
+  if (!el || el.nodeType !== 1) return false;
+  return isEditable(el) || !!el.closest?.('input,textarea,select,[contenteditable=""],[contenteditable="true"]');
+}
+
 function caretRangeAtPoint(x, y, root) {
   const doc = root?.ownerDocument || document;
+  // ShadowRoot has no caretRangeFromPoint — pierce via caretPositionFromPoint options.
+  if (root?.nodeType === 11 && typeof doc.caretPositionFromPoint === 'function') {
+    try {
+      const pos = doc.caretPositionFromPoint(x, y, { shadowRoots: [root] });
+      if (pos?.offsetNode) {
+        const r = doc.createRange();
+        r.setStart(pos.offsetNode, pos.offset);
+        r.collapse(true);
+        return r;
+      }
+    } catch {
+      /* older Chromium without shadowRoots option */
+    }
+  }
   if (root?.nodeType === 11 && root.caretRangeFromPoint) return root.caretRangeFromPoint(x, y);
   if (doc.caretRangeFromPoint) return doc.caretRangeFromPoint(x, y);
   const pos = doc.caretPositionFromPoint?.(x, y);
@@ -164,7 +188,7 @@ function ensurePopup() {
   popupHost.style.cssText = 'all:initial;position:fixed;z-index:2147483647;pointer-events:none;top:0;left:0';
   const shadow = popupHost.attachShadow({ mode: 'closed' });
   shadow.innerHTML = `<style>
-    .g{font:14px/1.4 "Segoe UI",system-ui,sans-serif;color:#cdd6f4;background:#1e1e2e;border:1px solid rgba(137,180,250,.35);border-radius:8px;padding:8px 10px;max-width:min(340px,92vw);box-shadow:0 8px 28px rgba(0,0,0,.4);pointer-events:auto}
+    .g{font:14px/1.4 "Segoe UI",system-ui,sans-serif;color:#cdd6f4;background:#1e1e2e;border:1px solid rgba(137,180,250,.35);border-radius:8px;padding:8px 10px;max-width:min(340px,92vw);max-height:min(60vh,420px);overflow:auto;box-shadow:0 8px 28px rgba(0,0,0,.4);pointer-events:auto}
     .w{font-weight:600;color:#cdd6f4;font-size:14px;margin-bottom:4px}
     .o{color:#89b4fa;font-size:12px;opacity:.9}
     .d{margin-top:6px;font-size:12px;color:#a6adc8}.p{font-weight:600;color:#cba6f7}
@@ -191,13 +215,14 @@ function hidePopupNow() {
 
 function placePopup(rect, cx, cy) {
   const pad = 10;
-  const w = 340;
+  const w = Math.min(340, innerWidth - pad * 2);
+  const h = popupEl?.getBoundingClientRect().height || 140;
   let left = cx + pad;
   let top = (rect?.bottom ?? cy) + pad;
   if (left + w > innerWidth - pad) left = innerWidth - w - pad;
-  if (top + 140 > innerHeight - pad) top = (rect?.top ?? cy) - 100;
+  if (top + h > innerHeight - pad) top = (rect?.top ?? cy) - h - pad;
   popupHost.style.left = `${Math.max(pad, left)}px`;
-  popupHost.style.top = `${Math.max(pad, top)}px`;
+  popupHost.style.top = `${Math.max(pad, Math.min(top, innerHeight - h - pad))}px`;
 }
 
 function esc(s) {
@@ -279,9 +304,11 @@ function scheduleSelectionHover(x, y, selHit) {
   clearTimeout(hoverTimer);
   const delay = settings.hoverDelayMs ?? HOVER_MS;
   const text = selHit.text;
+  if (popupText === text) return;
   hoverTimer = setTimeout(() => {
     hoverTimer = 0;
     if (!settings.enabled || !pointerInside) return;
+    if (popupText === text) return;
     const again = getSelectionHover(lastX, lastY);
     if (!again || again.text !== text) return;
     requestTranslate(text, again.rect, lastX, lastY);
@@ -296,6 +323,7 @@ function scheduleHover(x, y) {
     if (!settings.enabled || !pointerInside) return;
     const hit = findTextRangeAtPoint(lastX, lastY);
     if (!hit || hit.word !== stickyWord) return;
+    if (popupText === hit.word) return;
     const rect = hit.range.getBoundingClientRect();
     requestTranslate(hit.word, rect, lastX, lastY);
   }, delay);
@@ -328,14 +356,15 @@ function onMouseMove(e) {
     return;
   }
 
-  if (stickySelection || popupText) hidePopupNow();
+  // Leaving a selection hover — clear selection sticky only (do not wipe word popup yet).
+  if (stickySelection) hidePopupNow();
   stickySelection = '';
 
   const hit = fastWordAt(x, y);
   const word = hit?.word || '';
 
-  if (popupText && word && popupText !== word) hidePopupNow();
-  else if (!word && (popupText || stickyWord)) hidePopupNow();
+  if (popupText && popupText !== word) hidePopupNow();
+  else if (!word && stickyWord) hidePopupNow();
   else if (word && stickyWord && word !== stickyWord) hidePopupNow();
 
   stickyWord = word;
@@ -355,6 +384,7 @@ function onMouseDown() {
 
 function onSelectionFinish() {
   if (!settings.enabled) return;
+  if (selectionInEditable()) return;
   const sel = getSelectedText();
   if (!sel) return;
   hidePopupNow();
@@ -371,8 +401,15 @@ function onPointerLeave() {
 
 document.addEventListener('mousemove', onMouseMove, { capture: true, passive: true });
 document.documentElement.addEventListener('mouseleave', onPointerLeave, { passive: true });
+window.addEventListener('blur', onPointerLeave);
 document.addEventListener('mousedown', onMouseDown, true);
-document.addEventListener('mouseup', () => setTimeout(onSelectionFinish, 8), true);
+document.addEventListener(
+  'mouseup',
+  (e) => {
+    if (e.button === 0) setTimeout(onSelectionFinish, 8);
+  },
+  true,
+);
 document.addEventListener('scroll', hidePopupNow, { capture: true, passive: true });
 addEventListener('resize', hidePopupNow, { passive: true });
 document.addEventListener('keydown', (e) => e.key === 'Escape' && hidePopupNow(), true);

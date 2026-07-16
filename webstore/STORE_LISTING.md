@@ -156,10 +156,23 @@ Primary: **German** and **English** (add both localizations in dashboard if poss
 Build with:
 
 ```powershell
-powershell -File scripts/build-release.ps1
+powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1
 ```
 
-Upload **`dist/glossa-extension.zip`** — not the full Git repo.
+Upload **`dist/glossa-extension.zip`** — not the full Git repo.  
+Current package version: **1.0.10**
+
+---
+
+## Update notes — v1.0.10 (paste into Description)
+
+Chrome Web Store has **no** separate “What's new” field. Put release notes **at the top of Beschreibung**.
+
+Vollständiger Copy-Paste-Block: **[`../CHANGELOG.md`](../CHANGELOG.md)** (Abschnitt „Für Store-Beschreibung“).
+
+**EN (one line):** More stable hover popup, ignore text selection in input fields, left-click-only translate on select, hover delay 0 ms works, better Shadow DOM support, fetch timeout, removed unused permission.
+
+**DE (one line):** Stabileres Hover-Popup, keine Übersetzung in Eingabefeldern, nur Linksklick bei Markierung, Hover-Verzögerung 0 ms speicherbar, besseres Shadow-DOM, Fetch-Timeout, unnötige Berechtigung entfernt.
 
 ---
 

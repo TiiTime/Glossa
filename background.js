@@ -96,7 +96,8 @@ function parseGoogleResponse(json, original) {
 async function fetchJson(url) {
   const res = await fetch(url, {
     method: 'GET',
-    headers: { 'Accept': 'application/json,text/plain,*/*' },
+    headers: { Accept: 'application/json,text/plain,*/*' },
+    signal: AbortSignal.timeout(8000),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
