@@ -5,7 +5,20 @@ Patches und Versionshinweise für **GitHub Releases** und den **Chrome Web Store
 > **Hinweis:** Im Chrome Web Store gibt es **kein** Feld „Neu in dieser Version“.  
 > Updates gehören **oben in die Beschreibung** (Store-Eintrag → Beschreibung) — oder nur hier auf GitHub.
 
-Aktuelle Package-Version: **1.0.11** (`manifest.json`)
+Aktuelle Package-Version: **1.0.12** (`manifest.json`)
+
+---
+
+## v1.0.12 — 2026-11-07
+
+- Nach einem installierten Versionsupdate öffnet sich einmalig die Seite **„Glossa wurde aktualisiert“** mit den Neuerungen.
+- Kein Hinweis bei Erstinstallation, normalen Browserstarts, Browserupdates oder Neuladen derselben Version.
+- Versionshinweise passend zur installierten Version, offline verfügbar und auf Deutsch/Englisch umschaltbar.
+- Keine neuen Berechtigungen und keine Änderungen am Übersetzungsverhalten.
+
+**Patchnotes zum Kopieren:** [`webstore/PATCHNOTES-1.0.12.txt`](webstore/PATCHNOTES-1.0.12.txt).
+
+**Für künftige Releases:** Version und Inhalte in `release-notes.json` zusammen mit `manifest.json` aktualisieren. Der Paketbau prüft, dass beide Versionsnummern übereinstimmen. Die Update-Seite ist Teil der Erweiterung; keine externe Website oder zusätzliche Veröffentlichung ist nötig.
 
 ---
 

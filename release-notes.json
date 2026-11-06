@@ -1,0 +1,29 @@
+{
+  "version": "1.0.12",
+  "releases": [
+    {
+      "version": "1.0.12",
+      "de": [
+        "Nach einem Versionsupdate zeigt Glossa automatisch die Neuerungen in einem eigenen Tab.",
+        "Der Hinweis erscheint einmal pro neuer Version. Danach übersetzt Glossa wie gewohnt weiter.",
+        "Die Update-Seite funktioniert auch offline und ist auf Deutsch und Englisch verfügbar."
+      ],
+      "en": [
+        "After a version update, Glossa automatically shows what's new in its own tab.",
+        "The notice appears once per new version. Glossa then keeps translating as usual.",
+        "The update page works offline and is available in German and English."
+      ]
+    },
+    {
+      "version": "1.0.11",
+      "de": [
+        "Ruhigeres Hover-Verhalten bei kleinen Mausbewegungen und weniger doppelte Übersetzungsanfragen.",
+        "Verbesserte Worterkennung auf modernen Webseiten sowie Schutz vor veralteten Ergebnissen und ungewollter Übersetzung in Editoren."
+      ],
+      "en": [
+        "Smoother hovering through small pointer movements and fewer duplicate translation requests.",
+        "Better word detection on modern websites, with protection against outdated results and unwanted translation in editors."
+      ]
+    }
+  ]
+}

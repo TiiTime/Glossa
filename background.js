@@ -2,6 +2,22 @@ const CACHE_MAX = 120;
 const cache = new Map();
 const inFlight = new Map();
 
+// Keep notices local to this browser and serialize duplicate lifecycle deliveries.
+let updateNoticeQueue = Promise.resolve();
+chrome.runtime.onInstalled.addListener((details) => {
+  updateNoticeQueue = updateNoticeQueue.then(async () => {
+    const version = chrome.runtime.getManifest().version;
+    if (details.reason !== 'update' || !details.previousVersion || details.previousVersion === version) return;
+    const stored = await chrome.storage.local.get('lastUpdateNoticeVersion');
+    if (stored.lastUpdateNoticeVersion === version) return;
+    await chrome.tabs.create({ url: chrome.runtime.getURL('updates.html') });
+    await chrome.storage.local.set({ lastUpdateNoticeVersion: version });
+  }).catch((error) => {
+    console.warn('Glossa update notice could not be opened:', error.message);
+  });
+  return updateNoticeQueue;
+});
+
 const DEFAULTS = {
   targetLang: 'de',
   sourceLang: 'auto',

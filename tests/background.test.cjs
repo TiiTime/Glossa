@@ -7,7 +7,7 @@ const path = require('node:path');
 function worker() {
   const requests = [];
   const context = vm.createContext({
-    chrome: { runtime: { onMessage: { addListener() {} } } },
+    chrome: { runtime: { onMessage: { addListener() {} }, onInstalled: { addListener() {} } } },
     AbortSignal,
     fetch(url) {
       return new Promise((resolve, reject) => requests.push({ url, resolve, reject }));

@@ -100,7 +100,7 @@ Details: [LICENSE](LICENSE)
 
 ## Chrome Web Store
 
-**Live:** [Glossa im Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.10 · Update **1.0.11** bereit)
+**Live:** [Glossa im Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.10 · Update **1.0.12** bereit)
 
 Listing-Texte, Screenshots und Datenschutz für Updates: Ordner [`webstore/`](webstore/) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)  
 **Patches / Versionshinweise:** [`CHANGELOG.md`](CHANGELOG.md) (oben in die Store-**Beschreibung** kopieren — kein separates Update-Feld)
@@ -203,7 +203,7 @@ Details: [LICENSE](LICENSE)
 
 ### Chrome Web Store
 
-**Live:** [Glossa on the Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.10 · update **1.0.11** ready)
+**Live:** [Glossa on the Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.10 · update **1.0.12** ready)
 
 Listing copy, screenshots, and privacy for updates: [`webstore/`](webstore/) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)  
 **Patches / release notes:** [`CHANGELOG.md`](CHANGELOG.md) (paste at top of Store **Description** — no separate What's-new field)
@@ -217,3 +217,9 @@ powershell -File scripts/create-icons.ps1
 ### Regression tests (developers)
 
 Run `node --test tests/*.test.cjs` with Node.js 24+ and Brave installed on Windows. Tests use isolated temporary browser profiles and controlled translation responses. See [`tests/README.md`](tests/README.md) for scope and the second-browser command.
+
+### Update notice
+
+After an installed version upgrade, Glossa opens `updates.html` once with the installed version and its release notes. No tab opens on first install, same-version reloads or browser updates. Notes are bundled, work offline and support German/English; the last shown version is stored in `chrome.storage.local`.
+
+For each release, update `manifest.json` and `release-notes.json` together. The package builder rejects mismatched versions. Users first receive this behavior when upgrading to 1.0.12; later releases retain it.

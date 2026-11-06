@@ -2,11 +2,11 @@
 
 Ready-to-upload materials for the Chrome Web Store.
 
-## Status (v1.0.10 live · v1.0.11 prepared locally)
+## Status (v1.0.10 live · v1.0.12 ready)
 
 Published: [Glossa on the Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm)
 
-Package: `dist/glossa-extension.zip` (version **1.0.11**) — build with `scripts/build-release.ps1`.
+Package: `dist/glossa-extension.zip` (version **1.0.12**) — build with `scripts/build-release.ps1`.
 
 | Asset | File | Size |
 |-------|------|------|

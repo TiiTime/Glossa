@@ -1,6 +1,6 @@
 # Glossa — Privacy Policy
 
-**Last updated:** 2026-07-16  
+**Last updated:** 2026-11-07
 **Developer:** Tii  
 **Extension:** Glossa (browser extension for Chrome / Brave)
 
@@ -16,6 +16,7 @@ When you hover a word or select text, Glossa sends **only that text** to **Googl
 
 - **Settings** (target language, hover delay, on/off) in your browser via `chrome.storage.sync`
 - **Translation cache** (recent lookups) in the extension background script memory — not sent to Tii
+- **Last displayed update version** in `chrome.storage.local` so the bundled release-notes page opens only once per installed version update. This value is not sent to a server.
 
 ## What we do not collect
 

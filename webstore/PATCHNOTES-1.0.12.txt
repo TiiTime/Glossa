@@ -1,0 +1,15 @@
+Neu in Glossa 1.0.12
+
+• Nach einem Versionsupdate öffnet Glossa einmalig eine Seite mit den Neuerungen.
+• Der Hinweis bestätigt: „Glossa wurde aktualisiert“ — das Update ist bereits installiert.
+• Die Versionshinweise sind auf Deutsch und Englisch verfügbar und funktionieren auch offline.
+• Keine zusätzlichen Berechtigungen. Die Übersetzungsfunktion bleibt unverändert.
+
+---
+
+What's new in Glossa 1.0.12
+
+• After a version update, Glossa opens a page showing what's new, once per new version.
+• The notice confirms that Glossa has been updated — the update is already installed.
+• Release notes are available in German and English and work offline.
+• No additional permissions. Translation works just as before.
