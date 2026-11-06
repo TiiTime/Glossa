@@ -6,8 +6,7 @@ const MOVE_THROTTLE_MS = 48;
 let settings = { targetLang: 'de', sourceLang: 'auto', hoverDelayMs: HOVER_MS, enabled: true };
 let hoverTimer = 0;
 let lastMoveAt = 0;
-let stickyWord = '';
-let stickySelection = '';
+let activeTarget = null;
 let popupText = '';
 let popupHost = null;
 let popupEl = null;
@@ -16,6 +15,9 @@ let loading = false;
 let lastX = 0;
 let lastY = 0;
 let pointerInside = false;
+let moveTimer = 0;
+let settingsRevision = 0;
+let settingsReady = false;
 
 function runtimeSend(msg) {
   return new Promise((resolve, reject) => {
@@ -39,42 +41,54 @@ function runtimeSend(msg) {
 }
 
 async function loadSettings() {
+  const revision = ++settingsRevision;
   try {
-    settings = await runtimeSend({ type: 'getSettings' });
+    const stored = await runtimeSend({ type: 'getSettings' });
+    if (revision !== settingsRevision) return;
+    settings = { ...settings, ...stored };
   } catch {
     /* defaults */
   }
+  if (revision !== settingsRevision) return;
+  settingsReady = true;
   if (!settings.enabled) hidePopupNow();
 }
 
 loadSettings();
-chrome.storage.onChanged.addListener((_, area) => {
-  if (area === 'sync') loadSettings();
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'sync') return;
+  const defaults = { targetLang: 'de', sourceLang: 'auto', hoverDelayMs: HOVER_MS, enabled: true };
+  const keys = Object.keys(defaults).filter(key => key in changes);
+  if (!keys.length) return;
+  // Invalidate synchronously: an older settings read or translation may still be pending.
+  settingsRevision++;
+  for (const key of keys) settings[key] = changes[key].newValue ?? defaults[key];
+  hidePopupNow();
+  // If startup is still pending, reload the complete settings snapshot.
+  if (!settingsReady) loadSettings();
 });
 
 function isEditable(el) {
-  if (!el || el.nodeType !== 1) return false;
-  const t = el.tagName;
-  return t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || el.isContentEditable;
+  if (el?.nodeType === 3) el = el.parentElement;
+  while (el?.nodeType === 1) {
+    const t = el.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || el.isContentEditable) return true;
+    el = el.parentElement || el.getRootNode()?.host;
+  }
+  return false;
 }
 
 function selectionInEditable() {
   const sel = window.getSelection();
-  const anchor = sel?.anchorNode;
-  if (!anchor) return false;
-  const el = anchor.nodeType === 3 ? anchor.parentElement : anchor;
-  if (!el || el.nodeType !== 1) return false;
-  return isEditable(el) || !!el.closest?.('input,textarea,select,[contenteditable=""],[contenteditable="true"]');
+  return isEditable(sel?.anchorNode) || isEditable(sel?.focusNode);
 }
 
-function caretRangeAtPoint(x, y, root) {
-  const doc = root?.ownerDocument || document;
-  // ShadowRoot has no caretRangeFromPoint — pierce via caretPositionFromPoint options.
-  if (root?.nodeType === 11 && typeof doc.caretPositionFromPoint === 'function') {
+function caretRangeAtPoint(x, y, shadowRoots = []) {
+  if (shadowRoots.length && typeof document.caretPositionFromPoint === 'function') {
     try {
-      const pos = doc.caretPositionFromPoint(x, y, { shadowRoots: [root] });
+      const pos = document.caretPositionFromPoint(x, y, { shadowRoots });
       if (pos?.offsetNode) {
-        const r = doc.createRange();
+        const r = document.createRange();
         r.setStart(pos.offsetNode, pos.offset);
         r.collapse(true);
         return r;
@@ -83,11 +97,10 @@ function caretRangeAtPoint(x, y, root) {
       /* older Chromium without shadowRoots option */
     }
   }
-  if (root?.nodeType === 11 && root.caretRangeFromPoint) return root.caretRangeFromPoint(x, y);
-  if (doc.caretRangeFromPoint) return doc.caretRangeFromPoint(x, y);
-  const pos = doc.caretPositionFromPoint?.(x, y);
+  if (document.caretRangeFromPoint) return document.caretRangeFromPoint(x, y);
+  const pos = document.caretPositionFromPoint?.(x, y);
   if (!pos) return null;
-  const r = doc.createRange();
+  const r = document.createRange();
   r.setStart(pos.offsetNode, pos.offset);
   r.collapse(true);
   return r;
@@ -122,44 +135,47 @@ function pointOverRange(x, y, range) {
   return false;
 }
 
-function wordAtPoint(x, y, root) {
-  const range = caretRangeAtPoint(x, y, root);
+function wordAtPoint(x, y, shadowRoots) {
+  const range = caretRangeAtPoint(x, y, shadowRoots);
   if (!range) return null;
   const node = range.startContainer;
-  if (node.nodeType !== 3) return null;
+  if (node.nodeType !== 3 || isEditable(node)) return null;
   const text = node.nodeValue || '';
   let off = range.startOffset;
   if (off >= text.length) off = text.length - 1;
+  // Caret APIs can snap the right half of a final glyph to the following space.
+  // Validate the actual word rectangle below so whitespace itself stays ignored.
+  if (!WORD_CHARS.test(text[off] || '') && off > 0) off--;
   if (off < 0) return null;
   const ch = text[off];
   if (!ch || !WORD_CHARS.test(ch)) return null;
+  range.setStart(node, off);
   const hit = expandRangeToWord(range);
   if (!hit || !pointOverRange(x, y, hit.range)) return null;
   return hit;
 }
 
-/** Fast path — caret only, no TreeWalker (hot path for leave detection). */
-function fastWordAt(x, y) {
-  return wordAtPoint(x, y, document);
+function pointContext(x, y) {
+  let element = document.elementFromPoint(x, y);
+  const shadowRoots = [];
+  while (element?.shadowRoot) {
+    const root = element.shadowRoot;
+    shadowRoots.push(root);
+    const inner = root.elementFromPoint(x, y);
+    if (!inner || inner === element) break;
+    element = inner;
+  }
+  return { element, shadowRoots };
 }
 
 function findTextRangeAtPoint(x, y) {
-  const hit = fastWordAt(x, y);
-  if (hit) return hit;
-  const el = document.elementFromPoint(x, y);
-  if (!el) return null;
-  let node = el;
-  while (node) {
-    if (node.shadowRoot) {
-      const w = wordAtPoint(x, y, node.shadowRoot);
-      if (w) return w;
-    }
-    node = node.parentNode || node.host;
-  }
-  return null;
+  const { element, shadowRoots } = pointContext(x, y);
+  if (!element || isEditable(element)) return null;
+  return wordAtPoint(x, y, shadowRoots);
 }
 
 function getSelectionHover(x, y) {
+  if (selectionInEditable() || isEditable(pointContext(x, y).element)) return null;
   const sel = window.getSelection();
   if (!sel?.toString().trim() || sel.isCollapsed || !sel.rangeCount) return null;
   const text = sel.toString().trim();
@@ -167,18 +183,32 @@ function getSelectionHover(x, y) {
   const range = sel.getRangeAt(0);
   for (const rect of range.getClientRects()) {
     if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-      return { text, rect: range.getBoundingClientRect() };
+      return { text, range: range.cloneRange(), kind: 'selection' };
     }
   }
   return null;
 }
 
 function getSelectedText() {
+  if (selectionInEditable()) return null;
   const sel = window.getSelection();
-  if (!sel?.toString().trim() || sel.isCollapsed) return null;
+  if (!sel?.toString().trim() || sel.isCollapsed || !sel.rangeCount) return null;
   const text = sel.toString().trim();
   if (text.length < 2) return null;
-  return { text, rect: sel.getRangeAt(0).getBoundingClientRect() };
+  return { text, range: sel.getRangeAt(0).cloneRange(), kind: 'selection' };
+}
+
+function hoverTargetAt(x, y) {
+  const selection = getSelectionHover(x, y);
+  if (selection) return selection;
+  const hit = findTextRangeAtPoint(x, y);
+  return hit ? { text: hit.word, range: hit.range, kind: 'word' } : null;
+}
+
+function sameTarget(a, b) {
+  return !!a && !!b && a.kind === b.kind && a.text === b.text &&
+    a.range.startContainer === b.range.startContainer && a.range.startOffset === b.range.startOffset &&
+    a.range.endContainer === b.range.endContainer && a.range.endOffset === b.range.endOffset;
 }
 
 function ensurePopup() {
@@ -201,11 +231,12 @@ function ensurePopup() {
 function hidePopupNow() {
   clearTimeout(hoverTimer);
   hoverTimer = 0;
-  if (loading) pendingRequest++;
+  clearTimeout(moveTimer);
+  moveTimer = 0;
+  pendingRequest++;
   loading = false;
   popupText = '';
-  stickyWord = '';
-  stickySelection = '';
+  activeTarget = null;
   if (popupHost?.isConnected) {
     popupHost.remove();
     popupHost = null;
@@ -260,18 +291,35 @@ function showError(word, msg, rect, cx, cy) {
   placePopup(rect, cx, cy);
 }
 
-async function requestTranslate(text, rect, cx, cy) {
+async function requestTranslate(target, cx, cy) {
+  if (!settingsReady || !settings.enabled || loading) return;
+  const { text, range } = target;
+  const rect = range.getBoundingClientRect();
+  const sl = settings.sourceLang;
+  const tl = settings.targetLang;
   const req = ++pendingRequest;
+  const isCurrent = () => {
+    if (req !== pendingRequest) return false;
+    const current = target.kind === 'selection' ? getSelectedText() :
+      pointerInside ? hoverTargetAt(lastX, lastY) : null;
+    if (!settings.enabled || settings.sourceLang !== sl || settings.targetLang !== tl ||
+        !sameTarget(activeTarget, target) || !sameTarget(current, target) || !range.startContainer.isConnected) {
+      hidePopupNow();
+      if (pointerInside) processPointer();
+      return false;
+    }
+    return true;
+  };
   loading = true;
   showLoading(text, rect, cx, cy);
   try {
     const result = await runtimeSend({
       type: 'translate',
       text,
-      tl: settings.targetLang,
-      sl: settings.sourceLang,
+      tl,
+      sl,
     });
-    if (req !== pendingRequest) return;
+    if (!isCurrent()) return;
     loading = false;
     if (!result) {
       showError(text, 'Keine Antwort — Seite neu laden (F5)', rect, cx, cy);
@@ -288,110 +336,83 @@ async function requestTranslate(text, rect, cx, cy) {
               ? 'Text zu lang'
               : 'Fehlgeschlagen';
       showError(text, msg, rect, cx, cy);
+      popupText = text;
     }
   } catch (e) {
-    if (req !== pendingRequest) return;
+    if (!isCurrent()) return;
     loading = false;
     const m = String(e?.message || '');
     const hint = m.includes('invalidated') || m.includes('Receiving end')
       ? 'Glossa neu laden: F5 auf dieser Seite'
       : 'Verbindung fehlgeschlagen';
     showError(text, hint, rect, cx, cy);
+    popupText = text;
   }
 }
 
-function scheduleSelectionHover(x, y, selHit) {
-  clearTimeout(hoverTimer);
-  const delay = settings.hoverDelayMs ?? HOVER_MS;
-  const text = selHit.text;
-  if (popupText === text) return;
-  hoverTimer = setTimeout(() => {
-    hoverTimer = 0;
-    if (!settings.enabled || !pointerInside) return;
-    if (popupText === text) return;
-    const again = getSelectionHover(lastX, lastY);
-    if (!again || again.text !== text) return;
-    requestTranslate(text, again.rect, lastX, lastY);
-  }, delay);
-}
-
-function scheduleHover(x, y) {
-  clearTimeout(hoverTimer);
+function scheduleHover(target) {
+  if (hoverTimer || loading || popupText === target.text) return;
   const delay = settings.hoverDelayMs ?? HOVER_MS;
   hoverTimer = setTimeout(() => {
     hoverTimer = 0;
-    if (!settings.enabled || !pointerInside) return;
-    const hit = findTextRangeAtPoint(lastX, lastY);
-    if (!hit || hit.word !== stickyWord) return;
-    if (popupText === hit.word) return;
-    const rect = hit.range.getBoundingClientRect();
-    requestTranslate(hit.word, rect, lastX, lastY);
+    if (!settings.enabled || !settingsReady || !pointerInside) return;
+    const current = hoverTargetAt(lastX, lastY);
+    if (!sameTarget(current, target) || !sameTarget(activeTarget, target)) {
+      // A throttled movement may not have updated activeTarget yet. Process it
+      // instead of discarding its trailing timer and stranding the next word.
+      processPointer();
+      return;
+    }
+    requestTranslate(current, lastX, lastY);
   }, delay);
 }
 
 function onMouseMove(e) {
-  if (!settings.enabled) return;
+  if (!settings.enabled || !settingsReady) return;
   pointerInside = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
+  // Check the exposed composed event path as well as the retargeted event element.
+  if ((e.composedPath?.() || [e.target]).some(isEditable)) {
+    hidePopupNow();
+    return;
+  }
   const now = Date.now();
-  if (now - lastMoveAt < MOVE_THROTTLE_MS) return;
-  lastMoveAt = now;
-
-  const x = e.clientX;
-  const y = e.clientY;
-  lastX = x;
-  lastY = y;
-
-  if (isEditable(e.target)) {
-    if (popupText) hidePopupNow();
+  const remaining = MOVE_THROTTLE_MS - (now - lastMoveAt);
+  if (remaining > 0) {
+    if (!moveTimer) moveTimer = setTimeout(processPointer, remaining);
     return;
   }
+  clearTimeout(moveTimer);
+  processPointer();
+}
 
-  const selHit = getSelectionHover(x, y);
-  if (selHit) {
-    if (popupText && popupText !== selHit.text) hidePopupNow();
-    else if (stickySelection && stickySelection !== selHit.text) hidePopupNow();
-    stickySelection = selHit.text;
-    stickyWord = '';
-    scheduleSelectionHover(x, y, selHit);
-    return;
+function processPointer() {
+  moveTimer = 0;
+  lastMoveAt = Date.now();
+  if (!settings.enabled || !settingsReady || !pointerInside) return;
+  const target = hoverTargetAt(lastX, lastY);
+  if (!sameTarget(target, activeTarget)) {
+    hidePopupNow();
+    activeTarget = target;
   }
-
-  // Leaving a selection hover — clear selection sticky only (do not wipe word popup yet).
-  if (stickySelection) hidePopupNow();
-  stickySelection = '';
-
-  const hit = fastWordAt(x, y);
-  const word = hit?.word || '';
-
-  if (popupText && popupText !== word) hidePopupNow();
-  else if (!word && stickyWord) hidePopupNow();
-  else if (word && stickyWord && word !== stickyWord) hidePopupNow();
-
-  stickyWord = word;
-  if (!word) {
-    clearTimeout(hoverTimer);
-    hoverTimer = 0;
-    return;
-  }
-
-  scheduleHover(x, y);
+  if (target) scheduleHover(target);
 }
 
 function onMouseDown() {
-  clearTimeout(hoverTimer);
-  hoverTimer = 0;
+  hidePopupNow();
 }
 
 function onSelectionFinish() {
-  if (!settings.enabled) return;
+  if (!settings.enabled || !settingsReady) return;
   if (selectionInEditable()) return;
   const sel = getSelectedText();
   if (!sel) return;
   hidePopupNow();
-  stickyWord = '';
-  stickySelection = sel.text;
-  const cx = sel.rect.left + sel.rect.width / 2;
-  requestTranslate(sel.text, sel.rect, cx, sel.rect.bottom);
+  activeTarget = sel;
+  const rect = sel.range.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  requestTranslate(sel, cx, rect.bottom);
 }
 
 function onPointerLeave() {

@@ -160,11 +160,19 @@ powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1
 ```
 
 Upload **`dist/glossa-extension.zip`** — not the full Git repo.  
-Current package version: **1.0.10**
+Current package version: **1.0.11** (prepared locally)
 
 ---
 
-## Update notes — v1.0.10 (paste into Description)
+## Update notes — v1.0.11
+
+**EN:** More reliable hover timing, fewer duplicate requests, improved compatibility with modern websites and protection against outdated translation results.
+
+**DE:** Zuverlässigeres Hover-Verhalten, weniger doppelte Anfragen, bessere Unterstützung moderner Webseiten und Schutz vor veralteten Übersetzungsergebnissen.
+
+Only copy the user-facing update text into the description, not this document or the complete changelog.
+
+## Previous update notes — v1.0.10
 
 Chrome Web Store has **no** separate “What's new” field. Put release notes **at the top of Beschreibung**.
 

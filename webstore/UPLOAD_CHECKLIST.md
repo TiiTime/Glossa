@@ -1,6 +1,6 @@
 # Glossa — Chrome Web Store Upload
 
-> **Status:** v1.0.9 live · **v1.0.10 bereit zum Upload**  
+> **Status:** v1.0.10 live · **v1.0.11 lokal vorbereitet**
 > Store: [Glossa](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm)
 
 Schritt-für-Schritt für das [Developer Dashboard](https://chrome.google.com/webstore/devconsole).  
@@ -11,14 +11,14 @@ Texte zum Kopieren: **`STORE_LISTING.md`** · Datenschutz: **`PRIVACY.md`**
 ## Vor dem Upload (lokal)
 
 ```powershell
-# Extension-ZIP bauen (v1.0.10)
+# Extension-ZIP bauen (v1.0.11)
 powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1
 ```
 
 | Prüfpunkt | Datei / Wert |
 |-----------|----------------|
 | ZIP | `dist/glossa-extension.zip` |
-| Version | `manifest.json` → **1.0.10** |
+| Version | `manifest.json` → **1.0.11** |
 | Permissions | nur `storage` (+ host: Google Translate) |
 | Store-Icon | `webstore/assets/icon-128.png` (128×128) |
 | Screenshots | `screenshot-01-hover.png`, `-02-selection.png`, `-03-settings.png` (je 1280×800, 24-bit RGB) |
@@ -40,7 +40,7 @@ powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1
 4. Optional: Update-Hinweise oben in **Beschreibung** einfügen (siehe **`CHANGELOG.md`** — kein separates „Neu in dieser Version“-Feld).
 5. **Zur Überprüfung einreichen** / **Prüfen lassen**.
 
-Screenshots/Icon/Privacy müssen nur geändert werden, wenn sich etwas geändert hat — für 1.0.10 reichen die bestehenden Assets.
+Dieses Update ändert keine Einstellungen oder Berechtigungen. Vor einer Veröffentlichung die bestehenden Store-Screenshots mit der tatsächlichen Oberfläche abgleichen.
 
 ---
 
@@ -87,7 +87,7 @@ Antworten wie in `STORE_LISTING.md` → Privacy practices:
 
 1. Review abwarten (typisch 1–3 Werktage, kann variieren).
 2. Bei Ablehnung: Meldung im Dashboard lesen, ZIP/Listing/Berechtigungen anpassen, neu einreichen.
-3. Nach Freigabe: GitHub-Release `v1.0.10` mit `glossa-extension.zip`; README-Version auf 1.0.10 setzen.
+3. Nach Freigabe: GitHub-Release `v1.0.11` mit `glossa-extension.zip`; README-Version auf 1.0.11 setzen.
 
 ---
 

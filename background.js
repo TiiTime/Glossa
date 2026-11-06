@@ -1,5 +1,6 @@
 const CACHE_MAX = 120;
 const cache = new Map();
+const inFlight = new Map();
 
 const DEFAULTS = {
   targetLang: 'de',
@@ -122,6 +123,18 @@ async function translateText(text, sl, tl) {
   const cached = getCached(trimmed, sl, tl);
   if (cached) return { ...cached, cached: true };
 
+  const key = cacheKey(trimmed, sl, tl);
+  if (inFlight.has(key)) return inFlight.get(key);
+  const request = translateUncached(trimmed, sl, tl);
+  inFlight.set(key, request);
+  try {
+    return await request;
+  } finally {
+    inFlight.delete(key);
+  }
+}
+
+async function translateUncached(trimmed, sl, tl) {
   const apis = ['gtx', 'dict'];
   let lastError = 'not_found';
 

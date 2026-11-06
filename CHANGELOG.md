@@ -5,7 +5,28 @@ Patches und Versionshinweise für **GitHub Releases** und den **Chrome Web Store
 > **Hinweis:** Im Chrome Web Store gibt es **kein** Feld „Neu in dieser Version“.  
 > Updates gehören **oben in die Beschreibung** (Store-Eintrag → Beschreibung) — oder nur hier auf GitHub.
 
-Aktuelle Package-Version: **1.0.10** (`manifest.json`)
+Aktuelle Package-Version: **1.0.11** (`manifest.json`)
+
+---
+
+## v1.0.11 — 2026-11-06 (lokal vorbereitet)
+
+Stabilitätsupdate für das bestehende Hover- und Markierungsverhalten.
+
+- Kleine Mausbewegungen auf demselben Wort oder derselben Markierung setzen die Hover-Wartezeit nicht mehr zurück.
+- Wortwechsel werden anhand der Textposition erkannt, auch bei identischen Wörtern an verschiedenen Stellen.
+- Identische laufende Übersetzungsanfragen teilen sich einen Netzwerkaufruf einschließlich API-Fallback.
+- Verspätete Antworten nach Wort-, Markierungs- oder Sprachwechsel sowie nach dem Ausschalten werden verworfen.
+- Gespeicherte Einstellungen werden vor der ersten Übersetzung geladen; ältere Antworten überschreiben keine neueren Einstellungen.
+- Einheitliche Worterkennung beim Hover und beim Anzeigen des Ergebnisses; Unterstützung für verschachtelte offene Shadow Roots.
+- Eingabefelder und Editoren werden beim Hover einschließlich laufender Anfragen geschützt.
+- Worterkennung an der rechten Hälfte des letzten Buchstabens verbessert; Leerraum bleibt ausgeschlossen.
+
+Keine zusätzlichen Einstellungen, Berechtigungen oder Dienste.
+
+**EN:** Stable hover timing through small pointer movements, shared in-flight translation requests, stale-result protection, consistent nested Shadow DOM hit testing and improved editor protection.
+
+**Package:** `dist/glossa-extension.zip`. Noch nicht im Store oder auf GitHub veröffentlicht.
 
 ---
 
