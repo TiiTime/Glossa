@@ -160,9 +160,9 @@ powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1
 ```
 
 Upload **`dist/glossa-extension.zip`** — not the full Git repo.  
-Current package version: **1.0.12**
+Current package version: **1.0.13**
 
-Latest patch text: [`PATCHNOTES-1.0.12.txt`](PATCHNOTES-1.0.12.txt).
+Latest patch text: [`PATCHNOTES-1.0.13.txt`](PATCHNOTES-1.0.13.txt).
 
 ---
 

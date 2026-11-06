@@ -14,6 +14,7 @@ test('packaging refuses release notes for another version before replacing the p
     'updates.html','updates.css','updates.js','release-notes.json','LICENSE']) fs.copyFileSync(path.join(root,name),path.join(temp,name));
   fs.cpSync(path.join(root,'icons'),path.join(temp,'icons'),{recursive:true});
   fs.copyFileSync(path.join(root,'scripts/build-release.ps1'),path.join(temp,'scripts/build-release.ps1'));
+  fs.copyFileSync(path.join(root,'scripts/sync-update-notes.ps1'),path.join(temp,'scripts/sync-update-notes.ps1'));
   const notes=JSON.parse(fs.readFileSync(path.join(temp,'release-notes.json'),'utf8'));
   notes.version='0.0.1';fs.writeFileSync(path.join(temp,'release-notes.json'),JSON.stringify(notes));
   const archive=path.join(temp,'dist/glossa-extension.zip');fs.writeFileSync(archive,'previous release');

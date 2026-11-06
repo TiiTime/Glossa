@@ -7,10 +7,12 @@ $stage = Join-Path $dist 'glossa-extension'
 $zip = Join-Path $dist 'glossa-extension.zip'
 
 $manifest = Get-Content -LiteralPath (Join-Path $root 'manifest.json') -Raw | ConvertFrom-Json
-$releaseNotes = Get-Content -LiteralPath (Join-Path $root 'release-notes.json') -Raw | ConvertFrom-Json
+$releaseNotes = Get-Content -LiteralPath (Join-Path $root 'release-notes.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($releaseNotes.version -ne $manifest.version) {
     throw 'release-notes.json version must match manifest.json before packaging.'
 }
+
+& (Join-Path $PSScriptRoot 'sync-update-notes.ps1')
 
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
 New-Item -ItemType Directory -Path $stage | Out-Null

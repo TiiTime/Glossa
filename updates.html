@@ -20,12 +20,49 @@
     </header>
     <main>
       <div class="status"><span aria-hidden="true">✓</span><span id="status">Update installiert</span></div>
-      <h1 id="title">Glossa wurde<br />aktualisiert.</h1>
+      <h1 id="title">Glossa wurde<br /> aktualisiert.</h1>
       <p class="intro" id="intro">Die neue Version ist bereits installiert. Du kannst wie gewohnt weiterübersetzen.</p>
       <div class="version-line"><span class="dot" aria-hidden="true"></span><span id="version">Glossa</span><span class="separator">/</span><span id="version-label">Bereit zum Übersetzen</span></div>
       <section class="notes" aria-labelledby="notes-title">
         <div class="section-heading"><h2 id="notes-title">Das ist neu</h2><span class="small-mark" aria-hidden="true">G.</span></div>
-        <div id="release-notes" aria-live="polite"><p id="loading">Versionshinweise werden geladen …</p></div>
+        <div id="release-notes" aria-live="polite">
+<!-- release-notes:start -->
+<section class="release-group" data-release-version="1.0.13"><h3>Version 1.0.13</h3><ul><li data-en="The complete documented version history and all changes are embedded directly in this HTML page.">Die vollst&#228;ndige dokumentierte Versionshistorie mit allen &#196;nderungen steht direkt in dieser HTML-Seite.</li>
+<li data-en="Release notes remain readable without JavaScript, and the HTML file can be opened directly.">Die Versionshinweise sind auch ohne JavaScript lesbar. Die HTML-Datei kann direkt ge&#246;ffnet werden.</li>
+<li data-en="Future updates automatically extend this history during packaging; German and English remain available.">K&#252;nftige Updates erg&#228;nzen diese Historie automatisch beim Paketbau; Deutsch und Englisch bleiben verf&#252;gbar.</li></ul></section>
+<section class="release-group" data-release-version="1.0.12"><h3>Version 1.0.12</h3><ul><li data-en="After a version update, Glossa automatically shows what&#39;s new in its own tab.">Nach einem Versionsupdate zeigt Glossa automatisch die Neuerungen in einem eigenen Tab.</li>
+<li data-en="The notice appears once per new version. Glossa then keeps translating as usual.">Der Hinweis erscheint einmal pro neuer Version. Danach &#252;bersetzt Glossa wie gewohnt weiter.</li>
+<li data-en="The update page works offline and is available in German and English.">Die Update-Seite funktioniert auch offline und ist auf Deutsch und Englisch verf&#252;gbar.</li>
+<li data-en="No update tab on first install, normal browser starts, browser updates or same-version reloads.">Kein Update-Tab bei Erstinstallation, normalen Browserstarts, Browserupdates oder Neuladen derselben Version.</li>
+<li data-en="No new permissions or changes to translation behavior.">Keine neuen Berechtigungen oder &#196;nderungen am &#220;bersetzungsverhalten.</li></ul></section>
+<section class="release-group" data-release-version="1.0.11"><h3>Version 1.0.11</h3><ul><li data-en="Small movements over the same word or selection no longer restart the hover delay.">Kleine Mausbewegungen auf demselben Wort oder derselben Markierung setzen die Hover-Wartezeit nicht mehr zur&#252;ck.</li>
+<li data-en="Word changes are identified by text position, including repeated identical words.">Wortwechsel werden anhand der Textposition erkannt, auch bei identischen W&#246;rtern an verschiedenen Stellen.</li>
+<li data-en="Identical in-flight translations share one network request, including fallback.">Identische laufende &#220;bersetzungsanfragen teilen sich einen Netzwerkaufruf einschlie&#223;lich API-Fallback.</li>
+<li data-en="Late responses after word, selection, language or enabled-state changes are discarded.">Versp&#228;tete Antworten nach Wort-, Markierungs- oder Sprachwechsel sowie nach dem Ausschalten werden verworfen.</li>
+<li data-en="Saved settings load before the first translation; older responses cannot overwrite newer settings.">Gespeicherte Einstellungen werden vor der ersten &#220;bersetzung geladen; &#228;ltere Antworten &#252;berschreiben keine neueren Einstellungen.</li>
+<li data-en="Consistent word detection when hovering and displaying results, including nested open shadow roots.">Einheitliche Worterkennung beim Hover und beim Anzeigen des Ergebnisses, auch in verschachtelten offenen Shadow Roots.</li>
+<li data-en="Input fields and editors are protected, including pending hover requests.">Eingabefelder und Editoren werden beim Hover einschlie&#223;lich laufender Anfragen gesch&#252;tzt.</li>
+<li data-en="Improved detection on the right half of the final letter; whitespace remains excluded.">Worterkennung an der rechten H&#228;lfte des letzten Buchstabens verbessert; Leerraum bleibt ausgeschlossen.</li></ul></section>
+<section class="release-group" data-release-version="1.0.10"><h3>Version 1.0.10</h3><ul><li data-en="Popup stays visible through small movements over the same word.">Popup bleibt bei kleinen Mausbewegungen auf demselben Wort sichtbar.</li>
+<li data-en="No reloading or flicker for an already visible result.">Kein erneutes Laden oder Flackern bei bereits sichtbarem Ergebnis.</li>
+<li data-en="Selections in inputs and contentEditable editors are ignored.">Markierungen in Eingabefeldern und contentEditable-Editoren werden ignoriert.</li>
+<li data-en="Only left-click triggers immediate selection translation.">Nur Linksklick l&#246;st die Sofort-&#220;bersetzung aus.</li>
+<li data-en="Zero-millisecond hover delay is saved correctly.">Hover-Verz&#246;gerung 0 ms wird korrekt gespeichert.</li>
+<li data-en="Improved word detection in Shadow DOM.">Verbesserte Worterkennung in Shadow DOM.</li>
+<li data-en="Disabling Glossa closes an open popup immediately.">Ausschalten schlie&#223;t ein offenes Popup sofort.</li>
+<li data-en="Losing window focus closes the popup.">Fenster-Fokusverlust schlie&#223;t das Popup.</li>
+<li data-en="Popup placement uses its actual height and long text can scroll.">Popup-Position ber&#252;cksichtigt die tats&#228;chliche H&#246;he und lange Texte sind scrollbar.</li>
+<li data-en="Network requests time out after eight seconds.">Netzwerkanfragen brechen nach acht Sekunden ab.</li>
+<li data-en="Save feedback remains correct after rapid repeated saves.">Die Speichermeldung bleibt auch bei schnellem wiederholtem Speichern korrekt.</li>
+<li data-en="Removed the unused activeTab permission.">Die ungenutzte Berechtigung activeTab wurde entfernt.</li></ul></section>
+<section class="release-group" data-release-version="1.0.9"><h3>Version 1.0.9</h3><ul><li data-en="First Chrome Web Store release with listing, screenshots and privacy policy.">Erste Ver&#246;ffentlichung im Chrome Web Store mit Listing, Screenshots und Datenschutzerkl&#228;rung.</li>
+<li data-en="87 selectable target languages.">87 ausw&#228;hlbare Zielsprachen.</li>
+<li data-en="New logo and extension icons.">Neues Logo und neue Erweiterungs-Icons.</li>
+<li data-en="Refined hover and selection behavior: translate only directly over a word, with no popup after leaving the browser.">Hover- und Markierungsverhalten &#252;berarbeitet: &#220;bersetzung nur direkt auf einem Wort, kein Popup nach Verlassen des Browsers.</li>
+<li data-en="Prepared Windows installer and release ZIP packaging.">Windows-Installer und Release-ZIP-Paketierung vorbereitet.</li></ul></section>
+<section class="release-group" data-release-version="1.0.4"><h3>Version 1.0.4</h3><ul><li data-en="Windows installer and release ZIP for easier manual setup.">Windows-Installer und Release-ZIP f&#252;r die einfachere manuelle Einrichtung.</li></ul></section>
+<!-- release-notes:end -->
+        </div>
       </section>
       <div class="actions">
         <a class="primary" id="store" href="https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm" target="_blank" rel="noopener noreferrer">Im Chrome Web Store ansehen <span aria-hidden="true">↗</span></a>

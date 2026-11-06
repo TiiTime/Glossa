@@ -1,6 +1,6 @@
 # Glossa — Chrome Web Store Upload
 
-> **Status:** v1.0.10 live · **v1.0.12 bereit**
+> **Status:** v1.0.10 live · **v1.0.13 bereit**
 > Store: [Glossa](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm)
 
 Schritt-für-Schritt für das [Developer Dashboard](https://chrome.google.com/webstore/devconsole).  
@@ -11,14 +11,14 @@ Texte zum Kopieren: **`STORE_LISTING.md`** · Datenschutz: **`PRIVACY.md`**
 ## Vor dem Upload (lokal)
 
 ```powershell
-# Extension-ZIP bauen (v1.0.12)
+# Extension-ZIP bauen (v1.0.13)
 powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1
 ```
 
 | Prüfpunkt | Datei / Wert |
 |-----------|----------------|
 | ZIP | `dist/glossa-extension.zip` |
-| Version | `manifest.json` → **1.0.12** |
+| Version | `manifest.json` → **1.0.13** |
 | Permissions | nur `storage` (+ host: Google Translate) |
 | Store-Icon | `webstore/assets/icon-128.png` (128×128) |
 | Screenshots | `screenshot-01-hover.png`, `-02-selection.png`, `-03-settings.png` (je 1280×800, 24-bit RGB) |
@@ -87,7 +87,7 @@ Antworten wie in `STORE_LISTING.md` → Privacy practices:
 
 1. Review abwarten (typisch 1–3 Werktage, kann variieren).
 2. Bei Ablehnung: Meldung im Dashboard lesen, ZIP/Listing/Berechtigungen anpassen, neu einreichen.
-3. Nach Freigabe: README-Store-Version auf 1.0.12 setzen. GitHub-Release und Web-Store-Freigabe sind getrennte Schritte.
+3. Nach Freigabe: README-Store-Version auf 1.0.13 setzen. GitHub-Release und Web-Store-Freigabe sind getrennte Schritte.
 
 ---
 

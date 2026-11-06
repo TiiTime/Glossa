@@ -5,6 +5,7 @@ const path = require('node:path');
 const os = require('node:os');
 const { spawn } = require('node:child_process');
 const { once } = require('node:events');
+const { pathToFileURL } = require('node:url');
 const { delay, until, connect } = require('./helpers/cdp.cjs');
 
 test('actual version upgrade opens the offline update page once, with correct release notes', { timeout: 30000 }, async t => {
@@ -58,10 +59,21 @@ test('actual version upgrade opens the offline update page once, with correct re
   worker=await findWorker(worker.target.id);
   const updateTarget=await until(async()=> (await targets()).find(item=>item.url.endsWith('/updates.html')),'automatic update tab');
   const page=await connect(updateTarget.webSocketDebuggerUrl);connections.push(page);
+  const releaseData=JSON.parse(fs.readFileSync(path.join(root,'release-notes.json'),'utf8'));
+  // Release history must be actual HTML, readable even without script execution.
+  await page.send('Emulation.setScriptExecutionDisabled',{value:true});
+  await page.send('Page.reload');
+  await delay(100);
+  assert.equal(await page.evaluate(`document.querySelectorAll('.release-group').length`),releaseData.releases.length);
+  assert.deepEqual(await page.evaluate(`[...document.querySelectorAll('#release-notes li')].map(item=>item.textContent)`),releaseData.releases.flatMap(release=>release.de));
+  assert.match(await page.evaluate(`document.querySelector('#release-notes').textContent`),/Wartezeit/);
+  await page.send('Emulation.setScriptExecutionDisabled',{value:false});
+  await page.send('Page.reload');
   const errors=[];
   page.on('Runtime.exceptionThrown',({exceptionDetails})=>errors.push(exceptionDetails.text));
   await page.send('Runtime.enable');
-  await until(()=>page.evaluate(`document.querySelectorAll('.release-group').length===2`),'release notes rendered');
+  await until(()=>page.evaluate(`document.querySelectorAll('.release-group').length===${releaseData.releases.length}`),'release notes rendered');
+  await until(()=>page.evaluate(`document.querySelector('#version').textContent==='Glossa ${currentManifest.version}'`),'page language initialized');
   await page.evaluate(`document.getElementById('language').textContent.includes('Deutsch')&&document.getElementById('language').click()`);
   assert.equal(await page.evaluate(`document.querySelector('h1').textContent`),'Glossa wurde aktualisiert.');
   assert.equal(await page.evaluate(`document.querySelector('#version').textContent`),`Glossa ${currentManifest.version}`);
@@ -70,6 +82,7 @@ test('actual version upgrade opens the offline update page once, with correct re
   await page.evaluate(`document.querySelector('#language').click()`);
   assert.equal(await page.evaluate(`document.querySelector('h1').textContent`),'Glossa has been updated.');
   assert.equal(await page.evaluate(`document.documentElement.lang`),'en');
+  assert.deepEqual(await page.evaluate(`[...document.querySelectorAll('#release-notes li')].map(item=>item.textContent)`),releaseData.releases.flatMap(release=>release.en));
   assert.deepEqual(errors,[]);
   await page.send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
   assert.equal(await page.evaluate(`document.documentElement.scrollWidth<=innerWidth`),true,'mobile layout has no horizontal overflow');
@@ -88,4 +101,9 @@ test('actual version upgrade opens the offline update page once, with correct re
   worker=await findWorker(worker.target.id);
   await delay(250);
   assert.equal((await targets()).filter(item=>item.url.endsWith('/updates.html')).length,0,'same version reload opens no second tab');
+  const fileUrl=pathToFileURL(path.join(extension,'updates.html')).href;
+  const localTarget=await (await fetch(`http://127.0.0.1:${port}/json/new?${fileUrl}`,{method:'PUT'})).json();
+  const localPage=await connect(localTarget.webSocketDebuggerUrl);connections.push(localPage);
+  await until(()=>localPage.evaluate(`document.querySelector('#version')?.textContent==='Glossa ${currentManifest.version}'`),'direct HTML file initializes without fetch');
+  assert.equal(await localPage.evaluate(`document.querySelectorAll('.release-group').length`),releaseData.releases.length);
 });

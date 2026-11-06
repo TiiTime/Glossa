@@ -5,7 +5,16 @@ Patches und Versionshinweise für **GitHub Releases** und den **Chrome Web Store
 > **Hinweis:** Im Chrome Web Store gibt es **kein** Feld „Neu in dieser Version“.  
 > Updates gehören **oben in die Beschreibung** (Store-Eintrag → Beschreibung) — oder nur hier auf GitHub.
 
-Aktuelle Package-Version: **1.0.12** (`manifest.json`)
+Aktuelle Package-Version: **1.0.13** (`manifest.json`)
+
+---
+
+## v1.0.13 — 2026-11-07
+
+- Die dokumentierte Versionshistorie mit allen Änderungen steht jetzt direkt in `updates.html`, einschließlich 1.0.12, 1.0.11, 1.0.10, 1.0.9 und des Installer-Releases 1.0.4.
+- Versionshinweise bleiben auch ohne JavaScript lesbar; die HTML-Datei kann direkt geöffnet werden. Deutsch/Englisch bleibt umschaltbar.
+- Der Paketbau übernimmt die vollständigen DE/EN-Einträge automatisch aus `release-notes.json` in die HTML-Datei, damit künftige Änderungen dort immer mitgeführt werden.
+- Das Übersetzungs- und Update-Hinweisverhalten bleibt unverändert.
 
 ---
 
@@ -18,7 +27,7 @@ Aktuelle Package-Version: **1.0.12** (`manifest.json`)
 
 **Patchnotes zum Kopieren:** [`webstore/PATCHNOTES-1.0.12.txt`](webstore/PATCHNOTES-1.0.12.txt).
 
-**Für künftige Releases:** Version und Inhalte in `release-notes.json` zusammen mit `manifest.json` aktualisieren. Der Paketbau prüft, dass beide Versionsnummern übereinstimmen. Die Update-Seite ist Teil der Erweiterung; keine externe Website oder zusätzliche Veröffentlichung ist nötig.
+**Für künftige Releases:** Alle Änderungen in `CHANGELOG.md` und `release-notes.json` ergänzen, die bestehende Historie erhalten und `scripts/sync-update-notes.ps1` ausführen. Die aktualisierte `updates.html` gehört zu jedem Release. Der Paketbau synchronisiert die HTML-Datei ebenfalls und prüft die Versionsnummer gegen `manifest.json`.
 
 ---
 

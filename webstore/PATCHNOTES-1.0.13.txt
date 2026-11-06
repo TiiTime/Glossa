@@ -1,0 +1,13 @@
+Neu in Glossa 1.0.13
+
+• Die Update-Seite enthält jetzt die vollständige dokumentierte Versionshistorie mit allen Änderungen direkt im HTML.
+• Versionshinweise bleiben auch ohne JavaScript lesbar; die Seite lässt sich direkt öffnen.
+• Deutsch und Englisch bleiben umschaltbar. Übersetzung und automatischer Update-Hinweis funktionieren wie gewohnt.
+
+---
+
+What's new in Glossa 1.0.13
+
+• The update page now includes the complete documented release history and all changes directly in its HTML.
+• Release notes remain readable without JavaScript, and the page can be opened directly.
+• German and English remain available. Translation and automatic update notices work as before.
