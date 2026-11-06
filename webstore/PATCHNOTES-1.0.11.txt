@@ -1,0 +1,19 @@
+Neu in Glossa 1.0.11
+
+• Ruhigeres Hover-Verhalten: Kleine Mausbewegungen auf demselben Wort setzen die Wartezeit nicht mehr zurück.
+• Weniger doppelte Übersetzungsanfragen und zuverlässigerer Wechsel zwischen Wörtern.
+• Veraltete Ergebnisse werden nach Sprachwechsel oder Ausschalten nicht mehr angezeigt.
+• Verbesserte Worterkennung auf modernen Webseiten und besserer Schutz von Eingabefeldern und Editoren.
+
+Glossa bleibt schlank: keine neuen Einstellungen oder zusätzlichen Berechtigungen.
+
+---
+
+What's new in Glossa 1.0.11
+
+• Smoother hovering: Small movements over the same word no longer restart the translation delay.
+• Fewer duplicate translation requests and more reliable switching between words.
+• Outdated results are discarded when changing languages or turning Glossa off.
+• Improved word detection on modern websites and better protection for input fields and editors.
+
+Glossa stays lightweight: no new settings or additional permissions.

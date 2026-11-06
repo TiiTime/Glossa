@@ -100,7 +100,7 @@ Details: [LICENSE](LICENSE)
 
 ## Chrome Web Store
 
-**Live:** [Glossa im Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.10 · Update **1.0.11** lokal vorbereitet)
+**Live:** [Glossa im Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.10 · Update **1.0.11** bereit)
 
 Listing-Texte, Screenshots und Datenschutz für Updates: Ordner [`webstore/`](webstore/) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)  
 **Patches / Versionshinweise:** [`CHANGELOG.md`](CHANGELOG.md) (oben in die Store-**Beschreibung** kopieren — kein separates Update-Feld)
@@ -203,7 +203,7 @@ Details: [LICENSE](LICENSE)
 
 ### Chrome Web Store
 
-**Live:** [Glossa on the Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.10 · update **1.0.11** prepared locally)
+**Live:** [Glossa on the Chrome Web Store](https://chromewebstore.google.com/detail/glossa/jopklcgamodpahihakgiogohpiaafamm) (v1.0.10 · update **1.0.11** ready)
 
 Listing copy, screenshots, and privacy for updates: [`webstore/`](webstore/) · [`STORE_LISTING.md`](webstore/STORE_LISTING.md)  
 **Patches / release notes:** [`CHANGELOG.md`](CHANGELOG.md) (paste at top of Store **Description** — no separate What's-new field)

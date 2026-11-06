@@ -9,7 +9,7 @@ Aktuelle Package-Version: **1.0.11** (`manifest.json`)
 
 ---
 
-## v1.0.11 — 2026-11-06 (lokal vorbereitet)
+## v1.0.11 — 2026-11-06
 
 Stabilitätsupdate für das bestehende Hover- und Markierungsverhalten.
 
@@ -26,7 +26,9 @@ Keine zusätzlichen Einstellungen, Berechtigungen oder Dienste.
 
 **EN:** Stable hover timing through small pointer movements, shared in-flight translation requests, stale-result protection, consistent nested Shadow DOM hit testing and improved editor protection.
 
-**Package:** `dist/glossa-extension.zip`. Noch nicht im Store oder auf GitHub veröffentlicht.
+**Package:** `dist/glossa-extension.zip`. Der Chrome-Web-Store-Upload erfolgt separat.
+
+**Patchnotes zum Kopieren (DE + EN):** [`webstore/PATCHNOTES-1.0.11.txt`](webstore/PATCHNOTES-1.0.11.txt).
 
 ---
 
